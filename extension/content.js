@@ -562,6 +562,22 @@
     }
   }
 
+  function isMeetingCode(value) {
+    return /^[a-z]{3,4}-[a-z]{3,4}-[a-z]{3,4}$/.test(value);
+  }
+
+  function getMeetingTitle() {
+    const title = document.title || '';
+    const cleaned = title
+      .replace(/^Meet\s*[-–—]\s*/, '')
+      .replace(/\s*[-–—]\s*Google Meet\s*$/, '')
+      .trim();
+    if (!cleaned || isMeetingCode(cleaned)) {
+      return '';
+    }
+    return cleaned;
+  }
+
   function nextCaptionId() {
     rowSequence += 1;
     return `cap_${Date.now()}_${rowSequence}`;
@@ -638,7 +654,8 @@
         text,
         lineCount: lines.length,
         finalizedAt: new Date().toISOString(),
-        meetingUrl: location.href
+        meetingUrl: location.href,
+        meetingTitle: getMeetingTitle()
       };
     }
 
